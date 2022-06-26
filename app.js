@@ -17,7 +17,6 @@ class Putin {
 
     static noPooCheck() {
         const last3Poops = this.poops.slice(-3);
-        // if (last3Poops === [0,0,0]) {console.log('BOOM')}; // тут я хотел сравнить эррей с эрреем, но почему-то оно не работает. Почему?
         if (last3Poops.at(-1) === 0 && last3Poops.at(-2) === 0 && last3Poops.at(-3) === 0) {
             const finalLine = document.createElement('tr');
             finalLine.innerHTML = `
