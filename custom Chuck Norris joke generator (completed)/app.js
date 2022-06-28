@@ -4,8 +4,8 @@ inputField.value = 1;
 document.querySelector('#jokesNo').addEventListener('input', jokesLimiter);
 
 function jokesLimiter(e) {
-    inputField <1 ? inputField = 1 : null;
-    inputField >10 ? inputField = 10 : null;
+    inputField.value <1 ? inputField.value = 1 : null;
+    inputField.value >10 ? inputField.value = 10 : null;
 };
 
 document.getElementById('button').addEventListener('click', loadData);
