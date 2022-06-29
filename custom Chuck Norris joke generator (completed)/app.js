@@ -29,7 +29,6 @@ function loadData(e) {
 
     xhr.onload = function() {
         if(this.status === 200) {
-            let input = parseInt(inputField.value);
             const xhrContent = JSON.parse(this.responseText).value;
             xhrContent.forEach(element => {
                 const newJoke = new Joke(element.joke)
