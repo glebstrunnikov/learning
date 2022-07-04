@@ -5,38 +5,51 @@ class EasyHTTP {
     else return res;
   }
 
-  async get(url) {
-    const response = await fetch(url);
-    this.checkErr(response);
-    const responseText = await response.text();
-    return responseText
+  get(url) {
+    return new Promise((resolve, reject) => {
+          fetch(url)
+          .then(res => this.checkErr(res))
+          .then(res => res.json())
+          .then(jsonText => resolve(jsonText))
+          .catch((err => reject(err)));
+      }
+    )
   }
 
-  async post(url, data) {
-    const response = await fetch(url, {
+  post(url, data) {
+    return new Promise ((resolve, reject) =>
+      fetch(url, {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify(data)
-      });
-      this.checkErr(response);
-      const responseText = await `Post published! Response: ${response.text()}`;
-      return responseText
+      })
+      .then(res => this.checkErr(res))
+      .then(res => resolve(`Data posted! Here's the response: ${res}`))
+      .catch(err => reject(err))
+    )
   }
   
-  async put(url, data) {
-    const response = await fetch(url, {
+  put(url, data) {
+    return new Promise((resolve, reject) =>
+      fetch(url, {
         method: 'PUT',
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify(data)
       })
-      this.checkErr(response);
-      const responseText = await `Post updated! Response: ${response.text()}`;
-      return responseText
+      .then(res => this.checkErr(res))
+      .then(res => resolve(`Data put! Here's the response: ${res}`))
+      .catch(err => reject(err))
+    )
   }
 
-  async delete(url) {
-    const response = await fetch(url, {method: 'DELETE'});
-    this.checkErr(response);
-    return 'Post deleted!'
+  delete(url) {
+    return new Promise((resolve, reject) =>
+      fetch(url, {
+        method: 'DELETE'
+      })
+      .then(res => this.checkErr(res))
+      .then(() => resolve(`Post deleted!`))
+      .catch(err => reject(err))
+    )
   }
 }
