@@ -1,17 +1,24 @@
+const savedCity = localStorage.getItem('city')
+window.addEventListener('load', setFromLS);
+
 class Weather {
     constructor() {
         this.api_key = '5c164962ce5b597097caf8d53bd68ef6'
     }
-    
 
+    checkErr(res) {
+        if (res.ok != true) {throw new Error(res.error)}
+        else return res
+    }
+    
 static checkLocalCoords () {
     return new Promise ((resolve, reject) => {
-        function error() {console.log('error')}
+        function error() {console.log('Error: weather API request failed')}
         const options = {
             enableHighAccuracy: true,
             timeout: 5000,
             maximumAge: 0
-        }
+        };
 
         function success(currentPosition) {
             let localCoords = [];
@@ -19,17 +26,37 @@ static checkLocalCoords () {
             localCoords.push(currentPosition.coords.latitude)
             resolve(localCoords)
             reject('error')
-        }
+        };
         window.navigator.geolocation.getCurrentPosition(success, error, options)
     })
 }
 
+async checkSetCoords (city) {
+    const coordsResponse = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${this.api_key}`);
+    const coordsResponseData = coordsResponse.json();
+    coordsResponseData
+    // .then(data => this.checkErr(data)) НЕ РАБОТАЕТ, ДОДЕЛАТЬ
+    .then(data => weather.checkSetWeather(data))
+
+}
+
 async checkLocalWeather(lon, lat) {
-    const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.api_key}`)
-    const weatherResponseData = weatherResponse.json()
-    weatherResponseData.then(data => console.log(data)).catch(err => console.log(err))
+    const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.api_key}`);
+    const weatherResponseData = weatherResponse.json();
+    weatherResponseData
+    .then(data => ui.drawUIlocal(data))
+    .catch(err => console.log(err))
+    // weatherResponseData.then(data => console.log(data)).catch(err => console.log(err))
     }
 
+async checkSetWeather(city) {
+    const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${city[0].lat}&lon=${city[0].lon}&appid=${this.api_key}`);
+    const weatherResponseData = weatherResponse.json();
+    weatherResponseData
+    .then(data => ui.drawUIset(data))
+    .catch(() => alert('Something went wrong'))
+    // weatherResponseData.then(data => console.log(data)).catch(err => console.log(err))
+    }
 
 }
 
@@ -37,47 +64,18 @@ const weather = new Weather;
 Weather.checkLocalCoords().then(function(coords) {
     weather.checkLocalWeather(coords[0], coords[1])
     }
-    )
+    );
 
+document.querySelector('#setBtn').addEventListener('click', set)
+function set (e) {
+    e.preventDefault();
+    const userText = document.querySelector('#userCity').value
+    localStorage.setItem('city', userText)
+    weather.checkSetCoords(userText)
+}
 
-// Weather.checkLocalLon().then(function(data) {
-//     weather.checkLocalWeather(data, 
-//         Weather.checkLocalLat().then(data => data)
-//         )
-// })
-
-
-
-
-
-
-
-// Weather.checkLocalLat();
-
-// weather.checkLocalWeather(Weather.checkLocalLon().then(data => data), '42.5623552')
-
-// console.log(localLon)
-// weather.checkLocalWeather('27.5349504', '42.5623552')
-// weather.checkLocalWeather(Weather.checkLocalLon(), Weather.checkLocalLat())
-
-
-// const options = {
-//     enableHighAccuracy: true,
-//     timeout: 5000,
-//     maximumAge: 0
-//   };
-  
-//   function success(pos) {
-//     const crd = pos.coords;
-  
-//     console.log('Your current position is:');
-//     console.log(`Latitude : ${crd.latitude}`);
-//     console.log(`Longitude: ${crd.longitude}`);
-//     console.log(`More or less ${crd.accuracy} meters.`);
-//   }
-  
-//   function error(err) {
-//     console.warn(`ERROR(${err.code}): ${err.message}`);
-//   }
-  
-//   navigator.geolocation.getCurrentPosition(success, error, options);
+function setFromLS (e) {
+    e.preventDefault();
+    weather.checkSetCoords(savedCity)
+}
+// доделать: сообщения об ошибках
