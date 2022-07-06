@@ -28,6 +28,29 @@ class UI {
         }
         else document.querySelector('#pic2').parentElement.style = "display: flex; justify-content: center; background-color: rgb(0, 0, 0);";
     }
+
+    removeErr (element) {
+        element.remove()
+    }
+
+    drawErr (msg) {
+        const errMsg = document.createElement('div');
+        errMsg.id = "errorMsg";
+        errMsg.className = "container";
+        errMsg.style = "display: flex; justify-content: center; background-color: rgb(255, 0, 0);";
+        errMsg.innerHTML = `
+        <div class="row">
+            <div class="col-12">
+                <h4 style="color: white;" class="p-3">${msg}</h4>
+            </div>
+        </div>
+        `
+        const mainContainer = document.querySelector('#main-container')
+        document.body.insertBefore(errMsg, mainContainer)
+        
+
+        setTimeout(() => document.querySelector('#errorMsg').remove(), 2000)
+    }
 }
 
 const ui = new UI

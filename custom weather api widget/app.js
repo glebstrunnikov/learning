@@ -7,7 +7,9 @@ class Weather {
     }
 
     checkErr(res) {
-        if (res.ok != true) {throw new Error(res.error)}
+        if (res.length === 0) {
+            throw new Error(res.error)
+        }
         else return res
     }
     
@@ -35,10 +37,13 @@ async checkSetCoords (city) {
     const coordsResponse = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${this.api_key}`);
     const coordsResponseData = coordsResponse.json();
     coordsResponseData
-    // .then(data => this.checkErr(data)) НЕ РАБОТАЕТ, ДОДЕЛАТЬ
+    .then(data => this.checkErr(data))
     .then(data => weather.checkSetWeather(data))
-
-}
+    .catch(() => {
+        localStorage.clear();
+        ui.drawErr('Something went wrong')
+        })
+    }
 
 async checkLocalWeather(lon, lat) {
     const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.api_key}`);
@@ -46,7 +51,6 @@ async checkLocalWeather(lon, lat) {
     weatherResponseData
     .then(data => ui.drawUIlocal(data))
     .catch(err => console.log(err))
-    // weatherResponseData.then(data => console.log(data)).catch(err => console.log(err))
     }
 
 async checkSetWeather(city) {
@@ -54,8 +58,7 @@ async checkSetWeather(city) {
     const weatherResponseData = weatherResponse.json();
     weatherResponseData
     .then(data => ui.drawUIset(data))
-    .catch(() => alert('Something went wrong'))
-    // weatherResponseData.then(data => console.log(data)).catch(err => console.log(err))
+    .catch(err => console.log(err))
     }
 
 }
@@ -78,4 +81,3 @@ function setFromLS (e) {
     e.preventDefault();
     weather.checkSetCoords(savedCity)
 }
-// доделать: сообщения об ошибках
