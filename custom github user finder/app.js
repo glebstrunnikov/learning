@@ -78,7 +78,7 @@ function UIRepos (repos) {
     for (let i = 0; i < 5; i++) {
         const repoLine = document.createElement('tr');
         repoLine.innerHTML = `
-            <td style="width:50%"><a href="https://github.com/${repos[i].full_name}">${repos[i].full_name}</a></td>
+            <td style="width:50%"><a href="https://github.com/${repos[i].full_name}">${repos[i].name}</a></td>
             <td>
                 <button id="starsOutput1" type="button" class="btn btn-primary btn-sm">Stars: ${repos[i].stargazers_count}</button>
                 <button id="forksOutput1" type="button" class="btn btn-secondary btn-sm">Watchers: ${repos[i].watchers_count}</button>
@@ -103,7 +103,7 @@ function sendRequests(e) {
 
         request.sendRequestRepos(inputField.value)
             .then(res => UIRepos(res))
-            .then(res => console.log(res))
             .catch(err => console.log(err))
     }
 }
+
