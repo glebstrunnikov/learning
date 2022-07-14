@@ -1,35 +1,48 @@
-try {
-throw new SyntaxError('errorrrr')
-} catch(err) {
-    console.log(err.message)
-}     
+function numberIterator (nums) {
+    let nextIndex = 0 // Why doesn't it make it 0 each time i call the iterator?
 
-// exec, test / match, search, replace (all these only work 1 time)
+    return {
+        nex: function() {
+            if (nextIndex < nums.length) {return {value: nums[nextIndex++], done: false}}
+            else {return {done: true}}
+        }
+        // next: function() {
+        //     return nextIndex < nums.length ?
+        //     {value: nums[nextIndex++], done: false} :
+        //     {done: true}
+        // }
+    }
+}
 
-let regEx1 = /fuck/i;
-regEx1 = /fuck/
-
-const text1 = 'Fuck oh fuck'
-
-console.log(regEx1.source)
-console.log(regEx1.exec(text1));
-console.log(regEx1.test(text1));
-console.log(text1.match(regEx1));
-console.log(text1.search(regEx1));
-console.log(text1.replace(regEx1, 'hell'))
-
-let regEx2 = /^[BD]ob/i
-regEx2 = /[^BD]ob/
-regEx2 = /bo{0,}b/
-regEx2 = /b(o{1,3})?b/
-regEx2 = /B/gi
-let text2 = 'Dob give me bb'
-console.log(regEx2.exec(text2));
-console.log(text2.replace(regEx2, 'T'));
-
-// let regEx3 = new RegExp(regEx2);
-
-// console.log(regEx2)
-// console.log(regEx3)
+const numsArr = [1,2,3,5,6]
+const numbers = numberIterator(numsArr)
+console.log(numbers.nex())
+console.log(numbers.nex())
+console.log(numbers.nex())
 
 
+function* createIds() {
+    let index = 1
+    while(true) {
+        yield index++
+    }
+}
+
+const generator = createIds()
+
+console.log(generator.next().value)
+console.log(generator.next().value)
+console.log(generator.next().value)
+
+
+// don't really understand how is it better than code below
+
+let indexID = 0
+function idCreator () {
+    indexID++
+    return indexID
+}
+
+console.log(idCreator())
+console.log(idCreator())
+console.log(idCreator())
