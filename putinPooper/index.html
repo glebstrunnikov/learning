@@ -12,17 +12,30 @@
     <div class="container">
         <div class="row">
             <div class="six columns">
-                <img src="pupoo.jpg" style="margin: auto; display: block;" alt="">
-                <br>
-                <a class="button" id="pooBtn" href="#" style="margin: auto; display: block; margin-bottom: 2em;">day cycle</a>
+                <img src="pupoo.jpg" style="margin: auto; display: block; margin-bottom: 2em;" alt="">
             </div>
         </div>
         <div class="row">
-            <div class="three columns">
-                <a class="button" id="saveBtn" href="#" style="margin: auto; display: block;">save</a>
+            <div class="four columns">
+                <a class="button" id="pooBtn" href="#" style="margin: auto; display: block; margin-bottom: 2em;">day cycle</a>                
             </div>
-            <div class="three columns">
-                <a class="button" id="loadBtn" href="#" style="margin: auto; display: block;">load</a>
+            <div class="two columns">
+                <a class="button" id="suitcaseBtn" href="#" style="margin: auto; display: block; margin-bottom: 2em;">suitcase</a>       
+            </div>
+        </div>
+        <div id="suitcase-field" style="display: none">
+            <div class="row">
+                <div class="three columns">
+                    <a class="button" id="saveBtn" href="#" style="margin: auto; display: block; margin-bottom: 2em">save</a>
+                </div>
+                <div class="three columns">
+                    <a class="button" id="loadBtn" href="#" style="margin: auto; display: block; margin-bottom: 2em">load</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <textarea name="pooHistory" id="pooHistory" cols="40" rows="10" style="margin: auto; display: block; "></textarea>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -32,7 +45,6 @@
                     </tbody>
             </div>
         </div>
-
     </div>
     <script src="app.js"></script>
 </body>
