@@ -45,20 +45,29 @@ async checkSetCoords (city) {
         })
     }
 
-async checkLocalWeather(lon, lat) {
-    const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.api_key}`);
-    const weatherResponseData = weatherResponse.json();
-    weatherResponseData
-    .then(data => ui.drawUIlocal(data))
-    .catch(err => console.log(err))
+checkLocalWeather(lon, lat) {
+    const weatherResponse = fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.api_key}`)
+    .then(data => {
+        data = data.json();
+        return data
+    })
+    .then((data) => ui.drawUIlocal(data))
+    // .then(data => );
+    // const weatherResponseData = weatherResponse.json();
+    // // ui.drawUIlocal(weatherResponseData);
+
+    // weatherResponseData
+    // .then(data => ui.drawUIlocal(data))
+    // .catch(err => console.log(err))
     }
 
 async checkSetWeather(city) {
     const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${city[0].lat}&lon=${city[0].lon}&appid=${this.api_key}`);
-    const weatherResponseData = weatherResponse.json();
-    weatherResponseData
-    .then(data => ui.drawUIset(data))
-    .catch(err => console.log(err))
+    const weatherResponseData = await weatherResponse.json();
+    ui.drawUIset(weatherResponseData)
+    // weatherResponseData
+    // .then(data => ui.drawUIset(data))
+    // .catch(err => console.log(err))
     }
 
 }
