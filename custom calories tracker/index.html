@@ -27,11 +27,12 @@
                             <div class="col-4">                                
                                 <div class="input-group mb-3" style="width:100%">
                                     <input id="UIName" type="text" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="width:100%; height: 3rem">
-                                    <ul id="UIDropdownList" class="dropdown-menu" style="">
-                                        <li><a class="dropdown-item" href="#">1</a></li>
+                                    <ul class="dropdown-menu" style="">
+                                        <div id="UIDropdownItems"></div>
+                                        <!-- <li><a class="dropdown-item" href="#">1</a></li>
                                         <li><a class="dropdown-item" href="#">2</a></li>
-                                        <li><a class="dropdown-item" href="#">3</a></li>
-                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#">3</a></li> -->
+                                        <li id="dropdownBefore"><hr class="dropdown-divider"></li>
                                         <li><a id="editorBtn" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">Add or edit...</a></li>
                                     </ul>
                                 </div>
@@ -41,41 +42,51 @@
                                 <input id="UIQuant" type="number" style="width:100%; height: 3rem">
                             </div>
 
-                            <div class="col-2">
+                            <div class="col-1">
 
-                                <select id="UIScale" class="form-select form-select-sm" style="width:100%; height: 3rem" aria-label="Default select example">
+                                <!-- <select id="UIScale" class="form-select form-select-sm" style="width:100%; height: 3rem" aria-label="Default select example">
                                     <option selected value="1">g</option>
                                     <option value="2">pc.</option>
-                                  </select>
+                                  </select> -->
+
+                                  <div id="UIScale" class="m-2">g</div>
 
                             </div>
 
                             <div class="col-2">
                                 <div class="input-group mb-3">
-                                    <input id="UIKcal" type="text" class="form-control" placeholder="1000" aria-label="Example text with button addon" aria-describedby="button-addon1" style="height: 3rem" disabled>
-                                    <!-- <button class="btn btn-outline-secondary p-0" type="button" id="button-addon1" style="width:30%; height: 3rem">*</button> -->
+                                    <input id="UIKcal" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" style="height: 3rem" disabled>
                                 </div>
                             </div>
 
 
-                            <div class="col-2">
-                                <button id="UIYummy" class="btn btn-primary" type="button" id="button-addon1" style="width:100%; height: 3rem">Yummy!</button>
+                            <div class="col-3">
+                                <button id="UIYummy" class="btn btn-primary" type="button" style="width:100%; height: 3rem" disabled>Yummy!</button>
                             </div>
 
                         </div>
                     </div>
                 </div>
-                <ul class="list-group">
-                    <li class="list-group-item">An item</li>
-                    <li class="list-group-item">A second item</li>
-                    <li class="list-group-item">A third item</li>
-                    <li class="list-group-item">A fourth item</li>
-                    <li class="list-group-item">And a fifth one</li>
-                  </ul>
-                  
+
+                <div class="container border">
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="table">
+                                <thead>
+                                    <th scope = col>What</th>
+                                    <th scope = col>How many</th>
+                                    <th scope = col>g/pc.</th>
+                                    <th scope = col>kcal</th>
+                                </thead>
+                                <tbody id="UIList">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+
             </div>
             
-
             <div class="col-4">
                 <div class="container">
                     <div class="row">
@@ -84,21 +95,16 @@
                         </div>
                         <div class="col-1"></div>
                         <div class="col-3">
-                            <button id="UISaveToArchive" class="btn btn-danger" type="button" id="button-addon1"><h3>Save</h3></button>
+                            <button id="UISaveToArchive" class="btn btn-danger" type="button"><h3>Save</h3></button>
                         </div>
                     </div>
                     <br>
-                    <span class="badge bg-success mb-1">Success</span>
-                    <span class="badge bg-success mb-1">Success</span>
-                    <span class="badge bg-success mb-1">Success</span>
-                    <span class="badge bg-success mb-1">Success</span>
-                    <span class="badge bg-success mb-1">Success</span>
-                    <span class="badge bg-success mb-1">Success</span>
-                    <span class="badge bg-success mb-1">Success</span>
-                    <span class="badge bg-success mb-1">Success</span>
-                    <span class="badge bg-success mb-1">Success</span>
-                    <span class="badge bg-success mb-1">Success</span>
-                    <span class="badge bg-success mb-1">Success</span>
+                    <div id="UILibrary">
+
+                    </div>
+
+                    <br>
+                    <button id="UIClear" class="btn btn-primary" type="button"><h6>Clear All</h4></button>
 
                 </div>
             </div>
@@ -119,7 +125,7 @@
 
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon1">Name</span>
-                <input id="UIProductName" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                <input id="UIProductName" type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
               </div>
 
               <div class="form-check">
@@ -137,12 +143,12 @@
 
               <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon1">kcal</span>
-                <input id="UIProductKcal" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                <input id="UIProductKcal" type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="basic-addon1">
               </div>
 
         </div>
         <div class="modal-footer">
-            <button id="UIDeleteBtn" type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+          <button id="UIDeleteBtn" type="button" class="btn btn-danger">Delete</button>
           <button id="UICloseBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button id="UISaveProductBtn" type="button" class="btn btn-primary">Save changes</button>
         </div>
@@ -153,10 +159,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
-
-
-
     <script src="main.js"></script>
+    <script src="UI.js"></script>
 </body>
 </html>
 
