@@ -1,8 +1,32 @@
+let archive = JSON.parse(localStorage.getItem('archive'))
+if (archive === null) {archive = []}
 let productLib = JSON.parse(localStorage.getItem('products'))
 if (productLib === null) {productLib = []}
 let belly = JSON.parse(localStorage.getItem('belly'))
 if (belly === null) {belly = []}
 let totalKcal = 0
+let history = JSON.parse(localStorage.getItem('history'))
+if (history === null) {history = []}
+
+class PageState {
+    constructor(f) {
+        this.f = f
+    }
+    run() {
+        this.f()
+    }
+}
+const homeState = new PageState(() => {
+    document.querySelector('#UIArchive').innerHTML = ''
+    document.querySelector('#main-container').style = "display: block"
+})
+
+const archiveState = new PageState(() => {
+    document.getElementById('main-container').style = "display: none"
+    loadArchive()
+})
+
+homeState.run()
 
 const UIName = document.getElementById('UIName');
 const UIQuant = document.getElementById('UIQuant');
@@ -22,6 +46,7 @@ const UIList = document.getElementById('UIList');
 const UITotalKcal = document.getElementById('UITotalKcal')
 const UILibrary = document.getElementById('UILibrary')
 const UIClear = document.getElementById('UIClear')
+const UISaveToArchive = document.getElementById('UISaveToArchive')
 
 
 class Product{
@@ -101,9 +126,10 @@ if (productLib.length <5) {
 // + 0. Rewrite adding lines to table to make it a single function
 // + 1. Delete from list buttons
 // + 2. Duplicate in lib preventor
-// 3. Save day to archive
-// 4. Archive page
-// 5. Error msgs
-// 6. Reorder to classes and docs
-// 7. Make case insensitive
+// + 3. Save day to archive
+// + 4. Archive page ! a bit vsraty approach to history storing due to date conversion when saving to LS
+// + 5. Delete from archive
+// 6. Error msgs
+// 7. Reorder to classes and docs
+// 8. Make case insensitive
 

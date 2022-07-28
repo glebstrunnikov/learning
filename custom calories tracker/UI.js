@@ -1,3 +1,6 @@
+document.querySelector('#homeBtn').addEventListener('click', () => homeState.f())
+document.querySelector('#archiveBtn').addEventListener('click', () => archiveState.f())
+
 productLib.forEach(element => {
     const productFromLib = new Product(element.foodName, element.foodScale, element.foodKcal)
     productFromLib.draw()
@@ -22,7 +25,6 @@ function saveProductToLib(e) {
         }
     })
     duplicateCounter = 0
-
 }
 
 UIDeleteBtn.addEventListener('click', deleteProduct)
@@ -154,3 +156,5 @@ function clearAll() {
     UIClear.firstElementChild.textContent = 'Clear All'
     }
 }
+
+UISaveToArchive.addEventListener('click', () => {saveDay()})
