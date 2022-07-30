@@ -13,27 +13,45 @@ function saveProductToLib(e) {
     const newProduct = new Product
     newProduct.loadFromUI()
 
+    if (productLib.length === 0) {
+        newProduct.addToLib()
+        newProduct.draw()
+        UIName.value = newProduct.name;
+    }
+
     let duplicateCounter = 0
-    productLib.forEach(el => {
-        if (el.foodName != newProduct.name) {
+    productLib.forEach(el => { 
+        if (el.foodName.toLowerCase() != newProduct.name.toLowerCase()) {
             duplicateCounter++
             if (duplicateCounter === productLib.length) {
                 newProduct.addToLib()
                 newProduct.draw()
                 UIName.value = newProduct.name;
-            }
-        }
+                drawMsgModal('Product saved to the library!')
+                console.log(productLib.indexOf(el))
+                console.log(productLib.length)
+                console.log(duplicateCounter)
+            } 
+        } else if (el.foodName === newProduct.name && el.foodKcal != newProduct.kcal) {
+            productLib[productLib.indexOf(el)].foodKcal = newProduct.kcal
+            localStorage.setItem('products', JSON.stringify(productLib))
+            drawMsgModal('Product rewritten!')
+        } else if (el.foodName === newProduct.name) {drawMsgModal('Such a product already exists!')}
+
     })
     duplicateCounter = 0
 }
 
 UIDeleteBtn.addEventListener('click', deleteProduct)
 function deleteProduct () {
-    productLib.forEach(element => {
+    const initialLength = productLib.length
+    productLib.forEach((element, index) => {
         if (element.foodName.indexOf(UIProductName.value) != -1) {
-            console.log(productLib.indexOf(element))
             productLib.splice(productLib.indexOf(element), 1)
+            drawMsgModal('Product deleted!')
         }
+        if (index+1 === productLib.length && productLib.length === initialLength) {
+            drawMsgModal("There's no such product to delete!")}
     }
     )
     UILibrary.innerHTML = '';
@@ -60,7 +78,7 @@ UIName.addEventListener('input', dropdownUpdate)
 function dropdownUpdate() {
     document.querySelector('#UIDropdownItems').innerHTML = ''
     productLib.forEach(element => {
-        if (element.foodName.indexOf(UIName.value) != -1) {
+        if (element.foodName.toLowerCase().indexOf(UIName.value.toLowerCase()) != -1) {
             const next1to5Li = document.createElement('li')
             next1to5Li.innerHTML = `<a id="list${element.foodName}" class="dropdown-item" href="#">${element.foodName}</a>`
             document.querySelector('#UIDropdownItems').appendChild(next1to5Li)
@@ -90,6 +108,12 @@ function checkIfCanEat () {
         UIYummy.disabled = true;
         UIKcal.placeholder = ''
     }
+}
+
+UIQuant.addEventListener('input', restrictNegative)
+function restrictNegative(e) {
+    e.preventDefault()
+    if (e.target.value < 0) {e.target.value = 0}
 }
 
 UIYummy.addEventListener('click', eat)
@@ -158,3 +182,21 @@ function clearAll() {
 }
 
 UISaveToArchive.addEventListener('click', () => {saveDay()})
+
+function drawMsg(msg) {
+    const alert = document.createElement('div')
+    alert.classList = "alert alert-success mt-4"
+    alert.role = "alert"
+    alert.innerHTML = `<h4 class="alert-heading">${msg}</h4>`
+    UIMsg.appendChild(alert)
+    setTimeout(() => {UIMsg.innerHTML = ''}, 1500)
+}
+
+function drawMsgModal(msg) {
+    const alert = document.createElement('div')
+    alert.classList = "alert alert-success mt-4"
+    alert.role = "alert"
+    alert.innerHTML = `<h6 class="alert-heading">${msg}</h6>`
+    UIModalMsg.appendChild(alert)
+    setTimeout(() => {UIModalMsg.innerHTML = ''}, 1500)
+}

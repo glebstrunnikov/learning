@@ -3,7 +3,11 @@ let today = []
 const UIArchive = document.getElementById('UIArchive')
 
 function saveDay() {
+
     const mealsToday = UIList.children.length;
+    if (mealsToday === 0) {
+        drawMsg('Nothing to save, eat smth first!')
+    } else {
 
     let theMeal = UIList.firstElementChild;
     saveMeal(theMeal)
@@ -17,7 +21,7 @@ function saveDay() {
         const theName = meal.firstElementChild.textContent;
         const theScale = meal.firstElementChild.nextElementSibling.nextElementSibling.textContent === 'g' ? 1 : 2;
         const theAmount = meal.firstElementChild.nextElementSibling.textContent;
-        const theKcal = theScale === 1 ? meal.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.textContent/theAmount*100 : meal.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.textContent;
+        const theKcal = theScale === 1 ? meal.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.textContent/theAmount*100 : meal.firstElementChild.nextElementSibling.nextElementSibling.nextElementSibling.textContent/theAmount;
         const theMealObj = new Meal(theName, theScale, theKcal, theAmount)
         today.push(theMealObj)
     }
@@ -26,6 +30,9 @@ function saveDay() {
     history.push(today)
     today = []
     localStorage.setItem('history', JSON.stringify(history))
+    drawMsg('Day saved!')
+    }
+
 }
 
 function loadArchive () {
@@ -61,7 +68,11 @@ function archiveDrawDay(day) {
         </tbody>
     </table>
     `
-    document.querySelector('#archiveContainer').appendChild(archiveDay)
+
+    const archiveContainer = document.getElementById('archiveContainer')
+    if (archiveContainer.innerHTML === '') {archiveContainer.appendChild(archiveDay)} else {
+        archiveContainer.insertBefore(archiveDay, archiveContainer.firstElementChild)
+    }
 
     document.querySelector(`#archiveDel${timestamp}`).addEventListener('click', archiveDeleteDay)
     function archiveDeleteDay(e) {
@@ -107,7 +118,6 @@ function archiveDrawDay(day) {
         }
     })
     document.getElementById(`archiveKcal${timestamp}`).textContent = dayKcal
-
 }
 
 

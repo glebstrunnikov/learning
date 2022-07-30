@@ -41,12 +41,15 @@ const UIProductKcal = document.getElementById('UIProductKcal');
 const UIDeleteBtn = document.getElementById('UIDeleteBtn');
 const UICloseBtn = document.getElementById('UICloseBtn');
 const UISaveProductBtn = document.getElementById('UISaveProductBtn');
+const UIModalMsg = document.getElementById('UIModalMsg')
 
 const UIList = document.getElementById('UIList');
 const UITotalKcal = document.getElementById('UITotalKcal')
 const UILibrary = document.getElementById('UILibrary')
 const UIClear = document.getElementById('UIClear')
 const UISaveToArchive = document.getElementById('UISaveToArchive')
+const UIMsg = document.getElementById('UIMsg')
+
 
 
 class Product{
@@ -106,21 +109,21 @@ class Meal extends Product {
     }
 }
 
-const foodExample = new Product('Apple', 2, 50)
-const foodExample2 = new Product('Rice', 1, 130)
-const foodExample3 = new Product('Apricote', 2, 60)
-const foodExample4 = new Product('Bread', 1, 100)
-const foodExample5 = new Product('Beer', 2, 225)
+// const foodExample = new Product('Apple', 2, 50)
+// const foodExample2 = new Product('Rice', 1, 130)
+// const foodExample3 = new Product('Apricote', 2, 60)
+// const foodExample4 = new Product('Bread', 1, 100)
+// const foodExample5 = new Product('Beer', 2, 225)
 
-const mealExample = new Meal(foodExample.name, foodExample.scale, foodExample.kcal, 1)
+// const mealExample = new Meal(foodExample.name, foodExample.scale, foodExample.kcal, 1)
 
-if (productLib.length <5) {
-    foodExample.addToLib()
-    foodExample2.addToLib()
-    foodExample3.addToLib()
-    foodExample4.addToLib()
-    foodExample5.addToLib()
-}
+// if (productLib.length <5) {
+//     foodExample.addToLib()
+//     foodExample2.addToLib()
+//     foodExample3.addToLib()
+//     foodExample4.addToLib()
+//     foodExample5.addToLib()
+// }
 
 // To do:
 // + 0. Rewrite adding lines to table to make it a single function
@@ -129,7 +132,21 @@ if (productLib.length <5) {
 // + 3. Save day to archive
 // + 4. Archive page ! a bit vsraty approach to history storing due to date conversion when saving to LS
 // + 5. Delete from archive
-// 6. Error msgs
-// 7. Reorder to classes and docs
-// 8. Make case insensitive
+// + 6. Add msgs
+// Msg cases:
+// - + product already in lib
+// - + nothing to save
+// - + product saved!
+// - + product rewritten!
+// - + product deleted!
+// - + day saved!
+// - + no such product to delete
+// + 7. Make case insensitive
+// + 7.1 forbid creating new products with the same names but different letter cases
+// + 7.2 make the dropdown recognize and put to input the product names typed in even if they're with different letter cases
+// 8. Reorder to classes and docs
+// + 9. Restrict quantities lower than 0
+// + 10. Allow modifying kcal for products
+// 11. Reverse the archive order
+
 
