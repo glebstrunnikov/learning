@@ -178,23 +178,31 @@ function drawTable(meal) {
         ? meal.amount * meal.kcal
         : (meal.amount * meal.kcal) / 100
     }</td>
-    <td><button id="del_${meal.name}_${
+    <td><button type="button" class="btn-close del_${meal.name}_${
     meal.amount
-  }" type="button" class="btn-close" aria-label="Close"></button></td>
+  }" aria-label="Close"></button></td>
     `;
   UIList.appendChild(newMealLine);
-  document
-    .getElementById(`del_${meal.name}_${meal.amount}`)
-    .addEventListener("click", deleteLine);
+  Array.from(
+    document.querySelectorAll(`.del_${meal.name}_${meal.amount}`)
+  ).forEach((el) => {
+    if (el.classList.contains("with_del_function") === false) {
+      el.addEventListener("click", deleteLine);
+      el.classList.add("with_del_function");
+    }
+  });
   function deleteLine(e) {
     e.preventDefault;
     e.target.parentElement.parentElement.remove();
+    let currentMealRemoved = false;
     belly.forEach((element) => {
       if (
         element.foodName === meal.name &&
-        element.foodAmount === meal.amount
+        element.foodAmount === meal.amount &&
+        currentMealRemoved === false
       ) {
         belly.splice(belly.indexOf(element), 1);
+        currentMealRemoved = true;
       }
     });
     localStorage.setItem("belly", JSON.stringify(belly));
