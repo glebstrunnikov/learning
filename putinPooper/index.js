@@ -48,6 +48,7 @@ app.post("/poop", (req, res) => {
       return console.log(err.message);
     }
   });
+  res.send("ok");
 });
 
 app.post("/reset", (req, res) => {

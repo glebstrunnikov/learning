@@ -1,4 +1,7 @@
 let gameOver;
+const pooBtn = document.querySelector("#pooBtn");
+const resetBtn = document.querySelector("#resetBtn");
+
 const PORT = 3000;
 
 class Putin {
@@ -19,7 +22,6 @@ class Putin {
     }
     putin.poops.push(newPoo.type);
     putin.drawPoo(newPoo.msg);
-    console.log(newPoo.type);
   }
 
   drawPoo(msg) {
@@ -31,12 +33,18 @@ class Putin {
   }
 
   putToSuitcase(pooType) {
+    pooBtn.disabled = true;
     fetch(`http://localhost:${PORT}/poop`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ pooType: pooType }),
-    }).catch((err) => console.log(err));
-    console.log(JSON.stringify(pooType));
+    })
+      .then((res) => {
+        if (res) {
+          pooBtn.disabled = false;
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   static noPooCheck() {
@@ -46,8 +54,6 @@ class Putin {
       last3Poops.at(-2) === 0 &&
       last3Poops.at(-3) === 0
     ) {
-      console.log(last3Poops);
-      console.log(putin.poops);
       const finalLine = document.createElement("tr");
       finalLine.innerHTML = `
             <td>Putin exploded! The end.</td>
@@ -57,7 +63,7 @@ class Putin {
     }
   }
 
-  static poo() {
+  poo() {
     if (gameOver != true) {
       const pooType = Math.floor(Math.random() * 8 + 1);
       putin.generatePoo(pooType);
@@ -68,7 +74,6 @@ class Putin {
 
   updateSuitcase(poops) {
     this.poops = poops;
-    console.log(putin.poops);
     document.querySelector("#pooList").innerHTML = "";
     poops.forEach((el) => {
       this.generatePoo(el);
@@ -84,15 +89,9 @@ class Putin {
         res.forEach((el) => {
           if (el.pooType > 3 || el.pootype === 0) {
             putin.poops.push(0);
-            console.log("added zero");
-            console.log(el);
           } else {
             putin.poops.push(el.pooType);
-            console.log("added poo");
-            console.log(el);
           }
-
-          console.log(putin.poops);
         });
         putin.updateSuitcase(putin.poops);
       });
@@ -106,28 +105,23 @@ class Putin {
       body: null,
     }).catch((err) => console.log(err));
     gameOver = false;
-    console.log("history clear");
   }
 }
 
 const putin = new Putin(); // приятно писать эту фамилию с маленькой буквы не из бессильной злобы, а со смыслом)
-console.log(putin.poops);
+
 putin.poops = [];
 Putin.checkPooHistory();
-console.log(putin.poops);
 
-document.querySelector("#pooBtn").addEventListener("click", Putin.poo);
-document
-  .querySelector("#resetBtn")
-  .addEventListener("click", Putin.clearSuitcase);
+pooBtn.addEventListener("click", putin.poo);
+
+resetBtn.addEventListener("click", Putin.clearSuitcase);
 
 class Poo {
   constructor(type) {
     this.type = type;
   }
 }
-
-console.log(Putin.prototype);
 
 // 1) Добавить в класс путин метод SAVE и соответственно кнопку во фронтенде, которая все результаты poop'а будет сохранять в файл в любом формате, я предлагаю 1 строчка - одна запись, внутри любые делиметеры (можно запятую, можно вертикальную палочку) по очереди поля
 
