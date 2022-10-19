@@ -7,28 +7,19 @@ class Putin {
     const newPoo = new Poo(pooType);
     if (newPoo.type === 1) {
       newPoo.msg = "Putin pooped with diarrhea...";
-    }
-    if (newPoo.type === 2) {
+    } else if (newPoo.type === 2) {
       newPoo.msg = "Putin pooped with solid poop...";
-    }
-    if (newPoo.type === 3) {
+    } else if (newPoo.type === 3) {
       newPoo.msg = "Putin pooped with mixed poop...";
-    }
-    if (newPoo.type === 0 || (newPoo.type >= 4 && newPoo.type <= 8)) {
+    } else if (newPoo.type >= 4 && newPoo.type <= 8) {
       newPoo.type = 0;
       newPoo.msg = "Putin can't poop today, oh gosh...";
+    } else if (newPoo.type === 0) {
+      newPoo.msg = "Putin can't poop today, oh gosh...";
     }
-    putin.drawPoo(newPoo.msg);
     putin.poops.push(newPoo.type);
-  }
-
-  putToSuitcase(pooType) {
-    fetch(`http://localhost:${PORT}/poop`, {
-      method: "POST",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ pooType: pooType }),
-    });
-    console.log(JSON.stringify(pooType));
+    putin.drawPoo(newPoo.msg);
+    console.log(newPoo.type);
   }
 
   drawPoo(msg) {
@@ -39,21 +30,13 @@ class Putin {
     document.querySelector("#pooList").appendChild(newLine);
   }
 
-  updateSuitcase(poops) {
-    this.poops = poops;
-    document.querySelector("#pooList").innerHTML = "";
-    poops.forEach((el) => this.generatePoo(el));
-    Putin.noPooCheck();
-  }
-
-  static clearSuitcase() {
-    this.poops = [];
-    document.querySelector("#pooList").innerHTML = "";
-    fetch(`http://localhost:${PORT}/reset`, {
+  putToSuitcase(pooType) {
+    fetch(`http://localhost:${PORT}/poop`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
-      body: null,
-    });
+      body: JSON.stringify({ pooType: pooType }),
+    }).catch((err) => console.log(err));
+    console.log(JSON.stringify(pooType));
   }
 
   static noPooCheck() {
@@ -63,6 +46,8 @@ class Putin {
       last3Poops.at(-2) === 0 &&
       last3Poops.at(-3) === 0
     ) {
+      console.log(last3Poops);
+      console.log(putin.poops);
       const finalLine = document.createElement("tr");
       finalLine.innerHTML = `
             <td>Putin exploded! The end.</td>
@@ -72,37 +57,69 @@ class Putin {
     }
   }
 
+  static poo() {
+    if (gameOver != true) {
+      const pooType = Math.floor(Math.random() * 8 + 1);
+      putin.generatePoo(pooType);
+      putin.putToSuitcase(pooType);
+      Putin.noPooCheck();
+    }
+  }
+
+  updateSuitcase(poops) {
+    this.poops = poops;
+    console.log(putin.poops);
+    document.querySelector("#pooList").innerHTML = "";
+    poops.forEach((el) => {
+      this.generatePoo(el);
+      this.poops.splice(-1);
+    });
+    Putin.noPooCheck();
+  }
+
   static checkPooHistory() {
     fetch(`http://localhost:${PORT}/poops`)
       .then((res) => res.json())
       .then((res) => {
         res.forEach((el) => {
-          putin.poops.push(el.pooType);
+          if (el.pooType > 3 || el.pootype === 0) {
+            putin.poops.push(0);
+            console.log("added zero");
+            console.log(el);
+          } else {
+            putin.poops.push(el.pooType);
+            console.log("added poo");
+            console.log(el);
+          }
+
           console.log(putin.poops);
         });
         putin.updateSuitcase(putin.poops);
       });
   }
+  static clearSuitcase() {
+    putin.poops = [];
+    document.querySelector("#pooList").innerHTML = "";
+    fetch(`http://localhost:${PORT}/reset`, {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: null,
+    }).catch((err) => console.log(err));
+    gameOver = false;
+    console.log("history clear");
+  }
 }
 
 const putin = new Putin(); // приятно писать эту фамилию с маленькой буквы не из бессильной злобы, а со смыслом)
+console.log(putin.poops);
 putin.poops = [];
 Putin.checkPooHistory();
+console.log(putin.poops);
 
-document.querySelector("#pooBtn").addEventListener("click", poo);
+document.querySelector("#pooBtn").addEventListener("click", Putin.poo);
 document
   .querySelector("#resetBtn")
   .addEventListener("click", Putin.clearSuitcase);
-
-function poo(e) {
-  e.preventDefault();
-  if (gameOver != true) {
-    const pooType = Math.floor(Math.random() * 8 + 1);
-    putin.generatePoo(pooType);
-    putin.putToSuitcase(pooType);
-    Putin.noPooCheck();
-  }
-}
 
 class Poo {
   constructor(type) {
