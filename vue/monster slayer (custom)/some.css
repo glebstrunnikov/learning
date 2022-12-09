@@ -1,0 +1,12 @@
+.healthbarWrapper {
+  height: 30px;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  background-color: rgb(167, 247, 151);
+}
+.healthbar {
+  width: 100%;
+  height: 100%;
+  background-color: red;
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet/less"
+      type="text/css"
+      href="/node_modules/goodt-framework-css/src/_all.less"
+    />
+    <link rel="stylesheet" type="text/css" href="some.css" />
+    <script
+      src="node_modules\less\dist\less.js"
+      type="text/javascript"
+    ></script>
+    <script src="https://unpkg.com/vue@next" defer></script>
+  </head>
+  <body>
+    <div id="application">
+      <div class="header bg-red-dark">
+        <div class="container">
+          <div class="row row-collapse">
+            <div class="col text-center">
+              <h2 class="color-white mar-none">Monster Slayer</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mar-v-3">
+        <div class="row">
+          <div class="col">
+            <div class="panel w-6-12 pad-h-8 pad-v-3">
+              <div class="panel-body text-center">
+                <h3>Monster health</h3>
+                <div class="healthbarWrapper">
+                  <div
+                    :style="{width: monsterHealthBar}"
+                    class="healthbar"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mar-v-3">
+        <div class="row">
+          <div class="col">
+            <div class="panel w-6-12 pad-h-8 pad-v-3">
+              <div class="panel-body text-center">
+                <h3>Player health</h3>
+                <div class="healthbarWrapper">
+                  <div
+                    :style="{width: playerHealthBar}"
+                    class="healthbar"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="gameStatus != 'inProgress'" class="container mar-v-3">
+        <div class="row">
+          <div class="col">
+            <div class="panel w-6-12 pad-h-8 pad-v-3">
+              <div class="panel-body text-center">
+                <h3>Game over!</h3>
+                <h2>{{gameStatus}}</h2>
+                <button @click="playAgain" class="btn btn-success btn-large">
+                  Play again
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="gameStatus === 'inProgress'" class="container mar-v-3">
+        <div class="row">
+          <div class="col m-col-6-12 text-center">
+            <button
+              @click="hit"
+              class="mar-v-4 w-f2 btn btn-primary btn-large mar-2"
+            >
+              HIT
+            </button>
+            <br />
+            <button
+              @click="heal"
+              class="mar-v-4 w-f2 btn btn-primary btn-large mar-2"
+            >
+              HEAL
+            </button>
+          </div>
+          <div class="col m-col-6-12 text-center">
+            <button
+              @click="special"
+              :disabled="!specialReady"
+              class="mar-v-4 w-f2 btn btn-primary btn-large mar-2"
+            >
+              SPECIAL
+            </button>
+            <br />
+            <button
+              @click="surrender"
+              class="mar-v-4 w-f2 btn btn-primary btn-large mar-2"
+            >
+              SURRENDER
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mar-v-3">
+        <div class="row">
+          <div class="col">
+            <div class="panel w-6-12 pad-h-8 pad-v-3">
+              <div class="panel-body text-center">
+                <h3>Battle log</h3>
+                <p v-for="(log, index) in battleLog">
+                  <span style="color: green" v-if="log[0] === 'Player'"
+                    >Player</span
+                  >
+
+                  <span style="color: red" v-if="log[0] === 'Monster'"
+                    >Monster</span
+                  >
+
+                  {{log[1]}}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="app.js
+    "
+      defer
+    ></script>
+  </body>
+</html>
